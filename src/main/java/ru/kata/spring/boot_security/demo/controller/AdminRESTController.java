@@ -19,17 +19,14 @@ import java.util.List;
 public class AdminRESTController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @Value("${url.api.admin}")
     private String adminUrl;
     @Value("${url.api.user}")
     private String userUrl;
 
-
-    public AdminRESTController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AdminRESTController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -65,20 +62,13 @@ public class AdminRESTController {
 
     @PostMapping("/api/admin")
     public User createUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.addUser(user);
         return user;
     }
 
     @PatchMapping("/api/admin/{id}")
     public User updateUser(@RequestBody User updateUser, @PathVariable("id") int id) {
-        if (updateUser.getPassword().equals(userService.getUserById(id).getPassword())) {
-            updateUser.setPassword(updateUser.getPassword());
-        } else {
-            updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
-        }
         userService.updateUser(id, updateUser);
         return findUser(id);
     }
-
 }
