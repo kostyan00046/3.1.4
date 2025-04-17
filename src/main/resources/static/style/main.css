@@ -1,0 +1,17 @@
+#mainTable tr th {
+    padding: 10px;
+}
+
+#mainTable tr th h5 {
+    font-weight: 700;
+}
+
+#mainTable tr td {
+    font-size: 20px;
+    padding: 7px;
+}
+
+#mainTable tr td p:last-child {
+    float: left;
+
+}
