@@ -1,30 +1,27 @@
-// Конфигурация
+
 const API_ENDPOINTS = {
     user: userUrl,
     admin: adminUrl
 };
 
-// DOM элементы
 const DOM_SELECTORS = {
     headerUsername: '#headerUsername',
     headerRoles: '#headerRoles',
     tableBody: '#mainTable tbody'
 };
 
-// Утилиты
 const formatRoles = roles =>
     roles?.map(role => role.role.replace("ROLE_", "")).join(' ') || '';
 
 const createTableCell = content =>
     `<td><p>${content}</p></td>`;
 
-// Обработка ошибок
 const handleError = (error, context) => {
     console.error(`Error in ${context}:`, error);
     return null;
 };
 
-// API запросы
+
 const fetchData = async (url, errorContext) => {
     try {
         const response = await fetch(url);
@@ -35,7 +32,7 @@ const fetchData = async (url, errorContext) => {
     }
 };
 
-// Отображение данных
+
 const displayUserData = async () => {
     const user = await fetchData(API_ENDPOINTS.user, 'fetching user data');
     if (!user) return;
@@ -87,7 +84,7 @@ const renderUserTable = async () => {
     }).join('');
 };
 
-// Инициализация
+
 const init = () => {
     document.addEventListener('DOMContentLoaded', () => {
         displayUserData();

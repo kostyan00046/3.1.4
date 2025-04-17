@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Конфигурация приложения
     const CONFIG = {
         ROLES: {
             ADMIN: { id: 1, authority: "ROLE_ADMIN", role: "ROLE_ADMIN" },
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         TABLE_COLUMNS: ['id', 'username', 'surname', 'age', 'email', 'roles']
     };
 
-    // Кэш DOM элементов
     const DOM = {
         tableBody: document.querySelector('#mainTable tbody'),
         forms: {
@@ -26,13 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Состояние приложения
     const state = {
         currentRow: null,
         currentId: null
     };
 
-    // Утилиты
     const utils = {
         formatRoles: roles => roles?.map(role => role.role.replace("ROLE_", "")).join(' ') || '',
 
@@ -58,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resetForm: form => form.reset()
     };
 
-    // API взаимодействия
     const api = {
         async deleteUser(id) {
             return this._fetch(`${CONFIG.API_URL}${id}`, 'DELETE');
@@ -89,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Обработчики событий
     const handlers = {
         setupEventDelegation() {
             document.addEventListener('click', this._handleTableClick.bind(this));
@@ -203,6 +197,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Инициализация приложения
     handlers.setupEventDelegation();
 });
