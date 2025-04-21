@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.Dao;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -14,10 +15,8 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-
     @PersistenceContext
     private EntityManager em;
-
 
     @Override
     public void addUser(User user) {
@@ -26,14 +25,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void removeUserById(int id) {
-        Query query = em.createQuery("delete from User u where id = :userId");
+        Query query = em.createQuery("DELETE FROM User u WHERE u.id = :userId");
         query.setParameter("userId", id);
         query.executeUpdate();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return em.createQuery("from User", User.class).getResultList();
+        return em.createQuery("FROM User", User.class).getResultList();
     }
 
     @Override
@@ -43,18 +42,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(int id, User updatedUser) {
-        User user = em.find(User.class, id);
-        user.setUsername(updatedUser.getUsername());
-        user.setPassword(updatedUser.getPassword());
-        user.setAge(updatedUser.getAge());
-        user.setSurname(updatedUser.getSurname());
-        user.setEmail(updatedUser.getEmail());
-        user.setRoles(updatedUser.getRoles());
+        User existingUser = em.find(User.class, id);
+        if (existingUser != null) {
+            BeanUtils.copyProperties(updatedUser, existingUser, "id");
+            em.merge(existingUser);
+        }
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        TypedQuery<User> query = em.createQuery("select u from User u left join fetch u.roles where u.username=:username", User.class);
+        TypedQuery<User> query = em.createQuery(
+                "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.username = :username",
+                User.class
+        );
         User user = query.setParameter("username", username).getSingleResult();
         if (user == null) {
             throw new UsernameNotFoundException("Username not found!");
