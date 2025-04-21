@@ -15,7 +15,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
 
 @RestController
-public class AdminRESTController {
+public class AdminRestController {
 
     private final UserService userService;
 
@@ -24,7 +24,7 @@ public class AdminRESTController {
     @Value("${url.api.user}")
     private String userUrl;
 
-    public AdminRESTController(UserService userService) {
+    public AdminRestController(UserService userService) {
         this.userService = userService;
     }
 

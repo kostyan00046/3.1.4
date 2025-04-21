@@ -6,17 +6,6 @@ import ru.kata.spring.boot_security.demo.Dao.RoleDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 
 
-@Service
-public class RoleService {
-
-    private final RoleDao roleDao;
-
-    public RoleService(RoleDao roleDao) {
-        this.roleDao = roleDao;
-    }
-
-    @Transactional
-    public void addRole(Role role) {
-        roleDao.save(role);
-    }
+public interface RoleService {
+    void addRole(Role role);
 }
